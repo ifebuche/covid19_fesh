@@ -129,18 +129,24 @@ def arcGis():
                 confirmed.append(x[0])
             else:
                 try:
-                    died = int(item.replace('(','').replace(')',''))#will work for dead count:they have braces
+                    died = int(item.replace('(','').replace(')','').replace(',', ''))#will work for dead count:they have braces
                     dead.append(died)
                 except:
                     state[-1] = state[-1] + ' ' + item #Get last item in country and concat to it as it is the latter part of it            
 
         # confirm matching length and make df and save to file
+        print("len state == len confirmed and dead")
+        print(len(state) == len(confirmed) == len(dead))
+        sleep(5)
         if len(state) == len(confirmed) == len(dead):
             df_us = pd.DataFrame()
 
             df_us['state'] = state
             df_us['confirmed'] = [int(i.replace(',','')) for i in confirmed]
             df_us['dead'] = dead
+
+            rating = lambda x,y: round((x / y) * 100, 1)
+            df_us['death_rate'] = rating(df_us['dead'], df_us['confirmed'])
 
             clear()
             print("We will be writing the data to a folder called 'Data'.\nLet's see if folder exists...")
@@ -149,20 +155,22 @@ def arcGis():
                 os.makedirs('data')
                 print("We just made a 'Data' folder as it didn't exist before")
                 #Save to data folder.
-                df.to_csv('data\\' + 'JHU_' + timestampStr + '_us' + '.csv', index=False)
+                df_us.to_csv('data\\' + 'JHU_' + timestampStr + '_us' + '.csv', index=False)
                 print("Data written to data folder.\n")
                 sleep(5)
                 clear()
             except:
                 print("The folder exists!")
                 sleep(3)
-                df.to_csv('data\\' + 'JHU_' + timestampStr + '_us' + '.csv', index=False)
-                print("Data written to data folder.\n")
+                df_us.to_csv('data\\' + 'JHU_' + timestampStr + '_us' + '.csv', index=False)
+                print("US Data written to data folder.\n")
                 sleep(5)
                 clear()
-
     except Exception as e:
         print("We hit a snag! See details below.\n{}\n\nData not retrieved".format(e))
+        print("Attempting to Commence covid-19 global data by JHU from ArcGIS...")
+        sleep(59)
+        arcGis()
         clear()
 
 
