@@ -274,6 +274,56 @@ def covidHelp():
         clear()
         print("\nThe current covid-19 global death rate according to this data is ~{}%".format(df.iloc[-1]['death_rate']))
 
+    return countries #for use in the collecting country by country
+
+def oya(line, prefix = 'https://corona.help/country/'):
+    url = prefix + line
+    
+    r = requests.get(url)
+    soup = BeautifulSoup(r.content, 'lxml')
+    target = soup.find_all('div', {'class':'col-xl-2 col-md-4 col-sm-6'})
+
+    count = []
+
+    for item in target:
+        hold = item.text.strip().replace('\n', '|')
+        x = hold.split('|')
+        count.append(x[0])
+    count.insert(0, line)
+    
+    df = pd.DataFrame()
+    
+    df['Country'] = [count[0]]
+    df['Total confirmed cases'] = [count[1]]
+    df['Total deaths'] = [count[2]]
+    df['Confirmed recoveries'] = [count[3]]
+    df['Cases confirmed today'] = [count[4]]
+    df['Deaths today'] = [count[5]]
+    df['Recoveries confirmed today'] = [count[6]]
+    return df
+
+# def get_naija():
+#     url = 'https://corona.help/country/nigeria'
+#     r = requests.get(url)
+#     soup = BeautifulSoup(r.content, 'lxml')
+#     target = soup.find_all('div', {'class':'col-xl-2 col-md-4 col-sm-6'})
+
+#     case = []
+#     count = []
+
+#     for item in target:
+#         hold = item.text.strip().replace('\n', '|')
+#         x = hold.split('|')
+#         case.append(x[1])
+#         count.append(x[0])
+
+#     df = pd.DataFrame()
+#     df['Cases'] = case
+#     df['Count'] = count
+    
+#     #Save 
+#     df.to_csv('data\\' + 'Naija.csv', index=False)
+
 #Execution
 print("Commencing covid-19 global data by JHU from ArcGIS...")
 sleep(2)
@@ -284,6 +334,43 @@ print("Done!")
 clear()
 print("Commencing covid-19 global data from covid.help...")
 sleep(2)
-covidHelp()
+countries = covidHelp()
 clear()
 print("Done!")
+
+#All countries
+countries_x = []
+for line in countries:
+    line = line.lower()
+    x = line.split()
+    if len(x) == 1:
+        countries_x.append(line)
+    elif len(x) == 2:
+        countries_x.append(x[0] + '-' + x[1].replace('(', '').replace(')', ''))
+    elif len(x) == 3:
+        countries_x.append(x[0] + '-' + x[1] + '-' + x[2])
+
+countries_x = countries_x[:-1]
+
+#Execuation for all countries table
+chai = []
+
+for line in countries_x:
+    try:
+        df = oya(line)
+        chai.append(df)
+    except:
+        try:
+            print("Failed at {}\nRetrying...".format(line))
+            sleep(2)
+            df = oya(line)
+            chai.append(df)
+        except:
+            print("Gave up on {} after 2 tries, so ...".format(line))
+    print("{} done.".format(line))
+    sleep(2)
+    clear()
+        
+combo = pd.concat(chai).reset_index(drop=True)
+
+combo.to_csv('data\\' + 'worldwide_' + timestampStr + '.csv', index=False)
