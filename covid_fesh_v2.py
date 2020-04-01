@@ -346,7 +346,7 @@ for line in countries:
     if len(x) == 1:
         countries_x.append(line)
     elif len(x) == 2:
-        countries_x.append(x[0] + '-' + x[1].replace('(', '').replace(')', ''))
+        countries_x.append(x[0].replace('.', '') + '-' + x[1].replace('(', '').replace(')', ''))
     elif len(x) == 3:
         countries_x.append(x[0] + '-' + x[1] + '-' + x[2])
 
