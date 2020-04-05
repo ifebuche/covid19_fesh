@@ -6,8 +6,11 @@ from datetime import datetime
 from time import sleep
 
 #date object and string from it to use as files name for order
-dateTimeObj = datetime.now()
-timestampStr = dateTimeObj.strftime("%d-%b-%Y")
+def d_time():
+    dateTimeObj = datetime.now()
+    timestampStr = dateTimeObj.strftime("%d-%b-%Y %H:%M:%S")
+
+    return timestampStr
 
 # define our clear function 
 def clear(): 
@@ -98,6 +101,7 @@ def arcGis():
                 os.makedirs('data')
                 print("We just made a 'Data' folder as it didn't exist before")
                 #Save to data folder.
+                timestampStr = d_time()
                 df.to_csv('data\\' + 'JHU_' + timestampStr + '.csv', index=False)
                 print("Data written to data folder.\n")
                 sleep(5)
@@ -105,6 +109,7 @@ def arcGis():
             except:
                 print("The folder exists!")
                 sleep(2)
+                timestampStr = d_time()
                 df.to_csv('data\\' + 'JHU_' + timestampStr + '.csv', index=False)
                 print("Data written to data folder.\n")
                 sleep(5)
@@ -155,6 +160,7 @@ def arcGis():
                 os.makedirs('data')
                 print("We just made a 'Data' folder as it didn't exist before")
                 #Save to data folder.
+                timestampStr = d_time()
                 df_us.to_csv('data\\' + 'JHU_' + timestampStr + '_us' + '.csv', index=False)
                 print("Data written to data folder.\n")
                 sleep(5)
@@ -162,6 +168,7 @@ def arcGis():
             except:
                 print("The folder exists!")
                 sleep(3)
+                timestampStr = d_time()
                 df_us.to_csv('data\\' + 'JHU_' + timestampStr + '_us' + '.csv', index=False)
                 print("US Data written to data folder.\n")
                 sleep(5)
@@ -252,6 +259,7 @@ def covidHelp():
         clear()
         print("We just made a 'Data' folder as it didn't exist before")
         #Save to data folder.
+        timestampStr = d_time()
         df.to_csv('my_folder\\' + 'covid_help_data_' + timestampStr + '.csv', index=False)
         cur_path = os.getcwd()+'\\data'
         os.startfile(cur_path)
@@ -265,6 +273,7 @@ def covidHelp():
         clear()
         print("The folder exists!")
         sleep(2)
+        timestampStr = d_time()
         df.to_csv('data\\' + 'covid_help_data_' + timestampStr + '.csv', index=False)
         cur_path = os.getcwd()+'\\data'
         os.startfile(cur_path)
@@ -372,5 +381,5 @@ for line in countries_x:
     clear()
         
 combo = pd.concat(chai).reset_index(drop=True)
-
+timestampStr = d_time()
 combo.to_csv('data\\' + 'worldwide_' + timestampStr + '.csv', index=False)
