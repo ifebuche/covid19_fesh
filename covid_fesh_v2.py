@@ -8,7 +8,7 @@ from time import sleep
 #date object and string from it to use as files name for order
 def d_time():
     dateTimeObj = datetime.now()
-    timestampStr = dateTimeObj.strftime("%d-%b-%Y %H:%M:%S")
+    timestampStr = dateTimeObj.strftime("%d-%b-%Y %H-%M-%S")
 
     return timestampStr
 
@@ -201,40 +201,31 @@ def covidHelp():
     #Get text of each line of 'tables' and strip whitespaces
     our_list = [line.text.strip() for line in tables]
 
-    #From observation, each country, including its name, has 5 consecutive rows
+    #From observation, each country, including its name, has 10 consecutive rows
     #Make arrays to match this order
-    countries = our_list[::5] #step five places through lines to get countries.
-    infected = our_list[1::5]
-    deaths = our_list[2::5]
-    recovered = our_list[3::5]
-    active = our_list[4::5]
+    countries = our_list[::10] #step five places through lines to get countries.
+    infected = our_list[1::10]
+    infected_today = our_list[2::10]
+    deaths = our_list[3::10]
+    deaths_today = our_list[4::10]
+    recovered = our_list[5::10]
+    recovered_today = our_list[6::10]
+    active = our_list[7::10]
+    critical = our_list[8::10]
+    tests = our_list[9::10]
 
-    #Convert our array of numbers to integer and add total
-    infected = [int(line) for line in infected]
-    infected.append(sum(infected))
 
-    deaths = [int(line) for line in deaths]
-    deaths.append(sum(deaths))
-
-    recovered = [int(line) for line in recovered]
-    recovered.append(sum(recovered))
-
-    active = [int(line) for line in active]
-    active.append(sum(active))
-
-    #Add an extra line/row 'Total' to countries array to match len of other arrays in anticipation of a dataframe
-    countries.append("Total")
-
-    clear()
-    print("Data retrieved, cleaned.\nMaking into a dataframe ...")
-    sleep(2)
-    #Make empty df and snap in the data
     df = pd.DataFrame()
     df['countries'] = countries
-    df['infected'] = infected
-    df['deaths'] = deaths
-    df['recovered'] = recovered
-    df['active'] = active
+    df['infected'] = [int(line.replace(',','')) for line in infected]
+    df['infected_today'] = [int(line.replace(',','')) for line in infected_today]
+    df['deaths'] = [int(line.replace(',','')) for line in deaths]
+    df['deaths_today'] = [int(line.replace(',','')) for line in deaths_today]
+    df['recovered'] = [int(line.replace(',','')) for line in recovered]
+    df['recovered_today'] = [int(line.replace(',','')) for line in recovered_today]
+    df['active'] = [int(line.replace(',','')) for line in active]
+    df['critical'] = [int(line.replace(',','')) for line in critical]
+    df['tests'] = [int(line.replace(',','')) for line in tests]
 
     clear()
     print("Calculating recovery and death rates...")
@@ -260,7 +251,7 @@ def covidHelp():
         print("We just made a 'Data' folder as it didn't exist before")
         #Save to data folder.
         timestampStr = d_time()
-        df.to_csv('my_folder\\' + 'covid_help_data_' + timestampStr + '.csv', index=False)
+        df.to_csv('data\\' + 'covid_help_data_' + timestampStr + '.csv', index=False)
         cur_path = os.getcwd()+'\\data'
         os.startfile(cur_path)
         clear()
@@ -292,23 +283,33 @@ def oya(line, prefix = 'https://corona.help/country/'):
     soup = BeautifulSoup(r.content, 'lxml')
     target = soup.find_all('div', {'class':'col-xl-2 col-md-4 col-sm-6'})
 
-    count = []
+    line1 = []
+    line2 = []
 
     for item in target:
         hold = item.text.strip().replace('\n', '|')
         x = hold.split('|')
-        count.append(x[0])
-    count.insert(0, line)
-    
+        line1.append(x[0])
+        line2.append(x[-2])
+    line1.extend(line2)
+    line1.insert(0, 'USA')
+    count = line1
+
     df = pd.DataFrame()
-    
+
     df['Country'] = [count[0]]
-    df['Total confirmed cases'] = [count[1]]
-    df['Total deaths'] = [count[2]]
-    df['Confirmed recoveries'] = [count[3]]
-    df['Cases confirmed today'] = [count[4]]
-    df['Deaths today'] = [count[5]]
-    df['Recoveries confirmed today'] = [count[6]]
+    df['Total confirmed'] = [count[1]]
+    df['Total_confirmed_today'] = [count[7]]
+    df['Total_deaths'] = [count[2]]
+    df['Total_deaths_today'] = [count[8]]
+    df['Total_Recoveries'] = [count[3]]
+    df['Total_Recoveries_today'] = [count[9]]
+    df['Active_confirmed'] = [count[4]]
+    df['Critical'] = [count[10]]
+    df['Mortality_close'] = [count[4]]
+    df['Mortality_confirmed'] = [count[11]]
+    df['Total_tests'] = [count[6]]
+    df['Total_tests_today'] = [count[12]]
     return df
 
 # def get_naija():
@@ -363,7 +364,7 @@ countries_x = countries_x[:-1]
 
 #Execuation for all countries table
 chai = []
-
+failed = []
 for line in countries_x:
     try:
         df = oya(line)
@@ -376,10 +377,14 @@ for line in countries_x:
             chai.append(df)
         except:
             print("Gave up on {} after 2 tries, so ...".format(line))
+            failed.append(line)
     print("{} done.".format(line))
     sleep(2)
     clear()
-        
+
+with open('data\\fail_log\\' +'failed_' + timestampStr + '.txt', 'a') as failures:
+    for line in failed:
+        failures.write(line + '\n')
 combo = pd.concat(chai).reset_index(drop=True)
 timestampStr = d_time()
 combo.to_csv('data\\' + 'worldwide_' + timestampStr + '.csv', index=False)

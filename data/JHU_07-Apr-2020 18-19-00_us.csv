@@ -1,0 +1,60 @@
+state,confirmed,dead,death_rate
+New York,138836,5489,4.0
+New Jersey,41090,1003,2.4
+Michigan,17221,727,4.2
+California,16373,388,2.4
+Louisiana,14867,512,3.4
+Florida,14504,283,2.0
+Massachusetts,13837,260,1.9
+Pennsylvania,13206,179,1.4
+Illinois,12264,308,2.5
+Washington,8384,383,4.6
+Texas,8163,153,1.9
+Georgia,7558,294,3.9
+Connecticut,6906,206,3.0
+Indiana,5507,173,3.1
+Colorado,5183,150,2.9
+Ohio,4453,142,3.2
+Maryland,4371,103,2.4
+Tennessee,3802,65,1.7
+North Carolina,3268,50,1.5
+Virginia,3215,66,2.1
+Missouri,2868,65,2.3
+Arizona,2732,65,2.4
+Wisconsin,2511,85,3.4
+South Carolina,2232,48,2.2
+Nevada,2096,71,3.4
+Alabama,2006,53,2.6
+Mississippi,1915,60,3.1
+Utah,1687,13,0.8
+Oklahoma,1329,51,3.8
+District of Columbia,1211,22,1.8
+Idaho,1170,13,1.1
+Oregon,1132,29,2.6
+Rhode Island,1082,27,2.5
+Kentucky,1008,60,6.0
+Minnesota,986,30,3.0
+Iowa,946,25,2.6
+Arkansas,928,16,1.7
+Kansas,864,25,2.9
+Delaware,783,15,1.9
+New Mexico,757,12,1.6
+New Hampshire,715,9,1.3
+Puerto Rico,573,23,4.0
+Vermont,543,23,4.2
+Maine,499,10,2.0
+Nebraska,417,9,2.2
+Hawaii,387,5,1.3
+West Virginia,345,4,1.2
+Montana,319,6,1.9
+South Dakota,288,4,1.4
+North Dakota,225,3,1.3
+Wyoming,212,0,0.0
+Alaska,191,6,3.1
+Guam,121,4,3.3
+Grand Princess,103,3,2.9
+Diamond Princess,49,0,0.0
+Virgin Islands,43,1,2.3
+Northern Mariana Islands,8,1,12.5
+American Samoa,0,0,
+Recovered,0,0,
