@@ -272,7 +272,8 @@ def covidHelp():
         print("Data written to data folder.\nWe just opened the folder.")
         sleep(2)
         clear()
-        print("\nThe current covid-19 global death rate according to this data is ~{}%".format(df.iloc[-1]['death_rate']))
+        print(f"\nThe current covid-19 global death rate according to this data is ~{df.death_rate.mean():.2f}")
+        print(f"\nThe current covid-19 global death rate according to this data is ~{df.recovery_rate.mean():.2f}")
 
     return countries #for use in the collecting country by country
 
@@ -292,7 +293,7 @@ def oya(line, prefix = 'https://corona.help/country/'):
         line1.append(x[0])
         line2.append(x[-2])
     line1.extend(line2)
-    line1.insert(0, 'USA')
+    line1.insert(0, line)
     count = line1
 
     df = pd.DataFrame()
@@ -349,6 +350,7 @@ clear()
 print("Done!")
 
 #All countries
+miss = []
 countries_x = []
 for line in countries:
     line = line.lower()
@@ -358,9 +360,11 @@ for line in countries:
     elif len(x) == 2:
         countries_x.append(x[0].replace('.', '') + '-' + x[1].replace('(', '').replace(')', ''))
     elif len(x) == 3:
-        countries_x.append(x[0] + '-' + x[1] + '-' + x[2])
-
-countries_x = countries_x[:-1]
+        countries_x.append(x[0].replace('.', '') + '-' + x[1] + '-' + x[2])
+    elif len(x) == 4:
+        countries_x.append(x[0].replace('.', '') + '-' + x[1] + '-' + x[2] + '-' + x[3])
+    else:
+        miss.append(line)
 
 #Execuation for all countries table
 chai = []
@@ -382,7 +386,9 @@ for line in countries_x:
     sleep(2)
     clear()
 
-with open('data\\fail_log\\' +'failed_' + timestampStr + '.txt', 'a') as failures:
+x = d_time()
+with open('data\\fail_log\\' +'failed_' + x + '.txt', 'a') as failures:
+    
     for line in failed:
         failures.write(line + '\n')
 combo = pd.concat(chai).reset_index(drop=True)
