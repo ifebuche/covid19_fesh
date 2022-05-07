@@ -3,13 +3,22 @@ bs4==0.0.1
 certifi==2019.11.28
 chardet==3.0.4
 idna==2.9
+<<<<<<< HEAD
 lxml==4.8.0
 numpy==1.19.4
 pandas==1.1.4
+=======
+numpy==1.18.2
+pandas==1.0.3
+>>>>>>> 27dd9875f98c51b82553091a9dbcf027191524ef
 python-dateutil==2.8.1
 pytz==2019.3
 requests==2.23.0
 selenium==3.141.0
 six==1.14.0
 soupsieve==2.0
+<<<<<<< HEAD
 urllib3==1.25.4
+=======
+urllib3==1.25.8
+>>>>>>> 27dd9875f98c51b82553091a9dbcf027191524ef
