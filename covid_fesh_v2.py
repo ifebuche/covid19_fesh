@@ -37,11 +37,7 @@ def arcGis():
     #Load the url and wait 10 seconds to finish populating dynamically
     print("We will load the url and hold for some seconds to ensure the page fully loads")
     browser.get(url)
-<<<<<<< HEAD
     sleep(30)
-=======
-    sleep(10)
->>>>>>> 27dd9875f98c51b82553091a9dbcf027191524ef
     clear()
 
     #Grab the needed page source and close the browser
@@ -54,7 +50,6 @@ def arcGis():
     info = BeautifulSoup(res,'html.parser') 
 
     #Get the Worldwide figures at the nav item
-<<<<<<< HEAD
     country_list = info.find_all('div', {'class': "flex-auto list-item-content overflow-hidden"})
 
     covid = {}
@@ -102,131 +97,6 @@ def arcGis():
         print("World Data written to data folder.\n")
         sleep(5)
         clear()
-=======
-    nav = info.find_all('nav', {'class':'feature-list'})
-
-    print("Attempting to create and save the tables...")
-    sleep(2)
-    try:
-        for item in nav[:1]:
-            holder = item.text.strip()
-            #print(x)
-
-        #cleanup the result  
-        list_container = holder.replace('\xa0 \xa0', '|').replace('\n', ' ').split()  
-
-
-        #Organise into two lists of country and totals
-        country = []
-        total = []
-        incrementer = 1
-
-        for i, item in enumerate(list_container):
-            x = item.split('|')
-            if len(x) > 1:
-                country.append(x[1].replace(',', ''))
-                total.append(x[0])
-            else:
-                country[i-incrementer] = country[i-incrementer] + ' ' + item #take the last item in country and concat to it as it is the latter part of it
-                incrementer += 1
-
-        #Confirm len of both arrays and if true, make a df
-        if len(country) == len(total):
-            #make a dataframe
-            cases = {}
-            for cont, tot in zip(country, total):
-                cases[cont] = [int(tot.replace(',',''))]
-            cases
-            df = pd.DataFrame(cases)
-
-            #drop a quick bar plot of the top ten
-            # df.T.head(10).plot(kind='bar', figsize=(19,5))
-
-            #Tranpost table, reset index and change col names
-            df1 = df.T.reset_index()
-            df1.columns = ['Country', 'Count']
-
-            #save to file to data folder
-            clear()
-            print("We will be writing the data to a folder called 'Data'.\nLet's see if folder exists...")
-            sleep(5)
-            try:
-                os.makedirs('data')
-                print("We just made a 'Data' folder as it didn't exist before")
-                #Save to data folder.
-                timestampStr = d_time()
-                df.to_csv('data\\' + 'JHU_' + timestampStr + '.csv', index=False)
-                print("Data written to data folder.\n")
-                sleep(5)
-                clear()
-            except:
-                print("The folder exists!")
-                sleep(2)
-                timestampStr = d_time()
-                df.to_csv('data\\' + 'JHU_' + timestampStr + '.csv', index=False)
-                print("Data written to data folder.\n")
-                sleep(5)
-                clear()
-
-        #Get and save data for US
-        for item in nav[1:2]:
-            holder_us = item.text.strip()
-
-        #clean out the list   
-        list_container_us = holder_us.replace('\xa0 \xa0', '|').replace('\n', ' ').split()  
-
-        #initialize empty lists to hold items
-        state = []
-        confirmed = []
-        dead = []
-
-        for i, item in enumerate(list_container_us):
-            x = item.split('|')
-            if len(x) > 1: #if it is more than one, the first is total and second is state
-                state.append(x[1])
-                confirmed.append(x[0])
-            else:
-                try:
-                    died = int(item.replace('(','').replace(')','').replace(',', ''))#will work for dead count:they have braces
-                    dead.append(died)
-                except:
-                    state[-1] = state[-1] + ' ' + item #Get last item in country and concat to it as it is the latter part of it            
-
-        # confirm matching length and make df and save to file
-        print("len state == len confirmed and dead")
-        print(len(state) == len(confirmed) == len(dead))
-        sleep(5)
-        if len(state) == len(confirmed) == len(dead):
-            df_us = pd.DataFrame()
-
-            df_us['state'] = state
-            df_us['confirmed'] = [int(i.replace(',','')) for i in confirmed]
-            df_us['dead'] = dead
-
-            rating = lambda x,y: round((x / y) * 100, 1)
-            df_us['death_rate'] = rating(df_us['dead'], df_us['confirmed'])
-
-            clear()
-            print("We will be writing the data to a folder called 'Data'.\nLet's see if folder exists...")
-            sleep(5)
-            try:
-                os.makedirs('data')
-                print("We just made a 'Data' folder as it didn't exist before")
-                #Save to data folder.
-                timestampStr = d_time()
-                df_us.to_csv('data\\' + 'JHU_' + timestampStr + '_us' + '.csv', index=False)
-                print("Data written to data folder.\n")
-                sleep(5)
-                clear()
-            except:
-                print("The folder exists!")
-                sleep(3)
-                timestampStr = d_time()
-                df_us.to_csv('data\\' + 'JHU_' + timestampStr + '_us' + '.csv', index=False)
-                print("US Data written to data folder.\n")
-                sleep(5)
-                clear()
->>>>>>> 27dd9875f98c51b82553091a9dbcf027191524ef
     except Exception as e:
         print("We hit a snag! See details below.\n{}\n\nData not retrieved".format(e))
         print("Attempting to Commence covid-19 global data by JHU from ArcGIS...")
@@ -367,33 +237,7 @@ def oya(line, prefix = 'https://corona.help/country/'):
     df['Total_tests_today'] = [count[12]]
     return df
 
-<<<<<<< HEAD
 
-=======
-# def get_naija():
-#     url = 'https://corona.help/country/nigeria'
-#     r = requests.get(url)
-#     soup = BeautifulSoup(r.content, 'lxml')
-#     target = soup.find_all('div', {'class':'col-xl-2 col-md-4 col-sm-6'})
-
-#     case = []
-#     count = []
-
-#     for item in target:
-#         hold = item.text.strip().replace('\n', '|')
-#         x = hold.split('|')
-#         case.append(x[1])
-#         count.append(x[0])
-
-#     df = pd.DataFrame()
-#     df['Cases'] = case
-#     df['Count'] = count
-    
-#     #Save 
-#     df.to_csv('data\\' + 'Naija.csv', index=False)
-
-#Execution
->>>>>>> 27dd9875f98c51b82553091a9dbcf027191524ef
 print("Commencing covid-19 global data by JHU from ArcGIS...")
 sleep(2)
 arcGis()
@@ -445,11 +289,7 @@ for line in countries_x:
     clear()
 
 x = d_time()
-<<<<<<< HEAD
 with open('data\\' +'failed_' + x + '.txt', 'a') as failures:
-=======
-with open('data\\fail_log\\' +'failed_' + x + '.txt', 'a') as failures:
->>>>>>> 27dd9875f98c51b82553091a9dbcf027191524ef
     
     for line in failed:
         failures.write(line + '\n')
