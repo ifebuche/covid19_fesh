@@ -16,3 +16,7 @@
 ### In case you want to make your own virtual environment
 - If you make your own virtual environment, install the dependencies in the requirements file.
   *pip install -r requirements.txt*
+
+  PS: Should you have issues working with the Chrome driver in the folder, check the version of your Chrome and download the the matching version from
+  https://chromedriver.storage.googleapis.com/index.html
+  At the time of this update the version was 100.0.4896.60 for Windows
