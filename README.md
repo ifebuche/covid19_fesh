@@ -12,7 +12,6 @@
 - The script opens a chrome browser and loads the target webpage, sleeps to hold it for a while for the page to load. Adjust the sleep time on line 20 to suit your internet speed constraints.
 - The script reads the page source and closes the browser instance it started. If the page finished loading, data will be pulled successfully otherwise there will be an error as the operation on the expected contents will fail. If so, the script ends and you will need to restart it.
 - You can run this script daily to get latest world figures: historic and current infection rates and vaccine coverage. PS: The script makes a new file of the data each time it is run, named according to the day's date and run time.
-- PS: I have left a jupyter notebook as a playground for where I updated the script in May 2022.
 
 ### In case you want to make your own virtual environment
 - If you make your own virtual environment, install the dependencies in the requirements file.
