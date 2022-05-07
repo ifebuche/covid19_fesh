@@ -46,10 +46,14 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
+<<<<<<< HEAD
 VIRTUAL_ENV='C:\Users\fesh\Documents\covid\covid_env'
 if ([ "$OSTYPE" = "cygwin" ] || [ "$OSTYPE" = "msys" ]) && $(command -v cygpath &> /dev/null) ; then
     VIRTUAL_ENV=$(cygpath -u "$VIRTUAL_ENV")
 fi
+=======
+VIRTUAL_ENV="$(if [ "$OSTYPE" "==" "cygwin" ]; then cygpath -u 'C:\Users\USER\Desktop\PYFESH~1\NOTEBO~1\covid\COVID1~1'; else echo '/C/Users/USER/Desktop/PYFESH~1/NOTEBO~1/covid/COVID1~1'; fi;)"
+>>>>>>> 27dd9875f98c51b82553091a9dbcf027191524ef
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
