@@ -3,6 +3,7 @@ bs4==0.0.1
 certifi==2019.11.28
 chardet==3.0.4
 idna==2.9
+
 lxml==4.8.0
 numpy==1.22.0
 pandas==1.1.4
